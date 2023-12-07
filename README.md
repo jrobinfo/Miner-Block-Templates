@@ -27,16 +27,31 @@ or
 node ocean-get-poolstatus.js
 ```
 
-When you run `ocean-get-poolstatus.js`, it sends a GET request to `https://ocean.xyz/template/poolstatus` and logs the response to the console. The response is a JSON object that contains information about the pool status. Here is an example of the data structure:
+When you run `ocean-get-poolstatus.js`, it sends a GET request to `https://ocean.xyz/template/poolstatus` and logs the response to the console. The response is an HTML snippet that contains information about the pool status. Here is an example of the data structure:
 
-```json
-{
-  "poolStatus": {
-    "totalTemplates": 100,
-    "activeTemplates": 50,
-    "inactiveTemplates": 50
-  }
-}
+```html
+<div id="pool-status">
+  
+  <div class="status-indicator status-online"></div>
+  <p id="pool-status-item">
+      HASHRATE: 546.0 Ph/s <span class="hide-450">&bull;</span> <span class="hide-450 pool-status-newline">BLOCKS FOUND: 11,633</span>
+  </p>
+  
+
+  <script>
+    window.setTimeout(function() {
+      $.get(
+        {
+          url: "/template/poolstatus",
+          success: (data) => {
+            $("#pool-status").replaceWith(data)
+          },
+          dataType: "text"
+        }
+      )
+    }, 60000)
+  </script>
+</div>
 ```
 
-In this example, `totalTemplates` is the total number of templates in the pool, `activeTemplates` is the number of currently active templates, and `inactiveTemplates` is the number of currently inactive templates.
+In this example, `HASHRATE` is the total hash rate of the pool, and `BLOCKS FOUND` is the total number of blocks found by the pool.
